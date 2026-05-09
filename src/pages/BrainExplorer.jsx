@@ -21,7 +21,6 @@ function BrainExplorer() {
   const [selectedMetabolites, setSelectedMetabolites] = useState([]);
   const [description, setDescription] = useState(null);
   const [loading, setLoading] = useState(false);
-  const debounceRef = useRef(null);
 
   const handleMetaboliteChange = (metabolites) => {
     setSelectedMetabolites(metabolites);
@@ -45,34 +44,51 @@ function BrainExplorer() {
     setRegionColours(colourMap);
   };
 
-  useEffect(() => {
+  const handleTextGenerate = async () => {
     if (selectedMetabolites.length === 0) return;
 
-    clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(async () => {
+    try {
+      const input = `In 2 or 3 sentences, describe how ${selectedMetabolites.join(
+        ", "
+      )} 
+      interact in Parkinson's disease pathology and which brain regions are affected. 
+      Write as a single cohesive paragraph without headers or bullet points.`;
+
+      setDescription(null);
       setLoading(true);
-      try {
-        const input = `In 2-3 sentences, briefly describe the role of ${selectedMetabolites.join(
-          ", "
-        )} in Parkinson's disease and which brain regions are affected. Always use complete sentences and correct grammar and punctuation.`;
 
-        const response = await fetch("http://localhost:8000/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ query: input }),
-        });
+      const response = await fetch("http://localhost:8000/atlas-describe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: input }),
+      });
 
-        const data = await response.json();
-        setDescription(data.response ?? data.answer ?? data.result ?? null);
-      } catch (e) {
-        setDescription(null);
-      } finally {
-        setLoading(false);
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let fullText = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const lines = decoder.decode(value).split("\n").filter(Boolean);
+        for (const line of lines) {
+          const parsed = JSON.parse(line);
+          if (parsed.type === "text") {
+            fullText += parsed.data;
+            setDescription(fullText);
+          }
+          if (parsed.type === "error") throw new Error(parsed.data);
+        }
       }
-    }, 800);
-
-    return () => clearTimeout(debounceRef.current);
-  }, [selectedMetabolites]);
+    } catch (e) {
+      console.error("Failed to generate explanation:", e);
+      setDescription(null);
+      alert("Unable to generate relevant text.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -94,14 +110,20 @@ function BrainExplorer() {
       <div className="atlas-container-brain-explorer">
         <ExplorerSidebar />
         <main className="explorer-viewer-pane">
+          <div style={{ height: "100%", width: "100%" }}>
+            <BrainViewer
+              activeRegions={activeRegions}
+              regionColours={regionColours}
+              onRegionClick={(name) => console.log(name)}
+            />
+          </div>
+        </main>
+        <aside className="metabolites-list" style={{ overflowY: "auto" }}>
           <div className="metabolite-description">
             {selectedMetabolites.length === 0 ? (
               <span className="description-placeholder">
-                Select a metabolite(s) to view an AI-generated explanation of its effect in the brain.
-              </span>
-            ) : loading ? (
-              <span className="description-loading">
-                <span className="description-spinner" />
+                Select a metabolite(s) to view an AI-generated explanation of
+                its effect in the brain.
               </span>
             ) : description ? (
               <p className="description-text">
@@ -111,19 +133,16 @@ function BrainExplorer() {
                   regionColours
                 )}
               </p>
+            ) : loading ? (
+              <span className="description-loading">
+                <span className="description-spinner" />
+              </span>
             ) : null}
           </div>
+          <button className="generate-button" onClick={handleTextGenerate}>
+            Generate explanation
+          </button>
 
-          <div style={{ height: "100%", width: "80%" }}>
-            <BrainViewer
-              activeRegions={activeRegions}
-              regionColours={regionColours}
-              onRegionClick={(name) => console.log(name)}
-            />
-          </div>
-        </main>
-
-        <aside className="metabolites-list" style={{ overflowY: "auto" }}>
           <MetaboliteSelector onSelectionChange={handleMetaboliteChange} />
         </aside>
       </div>

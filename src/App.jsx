@@ -1,9 +1,16 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import ChatAI from "./pages/ChatAI";
 import BrainExplorer from "./pages/BrainExplorer";
 import KnowledgeBase from "./pages/KnowledgeBase";
+import AtlasManager from "./pages/AtlasManager";
+import AdminLogin from "./components/AdminLogin";
 import { AnimatePresence } from "framer-motion";
 
 function AnimatedRoutes() {
@@ -17,6 +24,14 @@ function AnimatedRoutes() {
         <Route path="/ChatAI" element={<ChatAI />} />
         <Route path="/BrainExplorer" element={<BrainExplorer />} />
         <Route path="/KnowledgeBase" element={<KnowledgeBase />} />
+        <Route
+          path="/AtlasManager"
+          element={
+            <AdminLogin>
+              <AtlasManager />
+            </AdminLogin>
+          }
+        />
       </Routes>
     </AnimatePresence>
   );

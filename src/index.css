@@ -354,6 +354,7 @@ body {
   flex-direction: column;
   overflow: hidden;
   border: 1px solid #e2e8f0;
+  max-height: 1000px;
   z-index: 10000;
 }
 
@@ -581,7 +582,7 @@ body {
 .metabolites-list {
   background-color: #13151d;
   padding: 20px;
-  padding-top: 100px;
+  padding-top: 0;
 }
 
 .base-pane {
@@ -598,11 +599,6 @@ body {
   font-family: "DM Mono", monospace;
   font-size: 12px;
   line-height: 1.7;
-  width: 150px;
-  max-width: 150px;
-  min-height: 800px;
-  height: 800px;
-  max-height: 800px;
   overflow-y: scroll;
   overflow-x: none;
   background: rgba(255, 255, 255, 0.05);
@@ -610,6 +606,10 @@ body {
   border-radius: 10px;
   padding: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #13151d;
+  min-height: 150px;
+  margin-bottom: 1rem;
+  color: #7e7b7b !important;
 }
 
 .description-placeholder {
@@ -623,18 +623,18 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 20rem;
   gap: 8px;
 }
 
 .description-spinner {
-  width: 12px;
-  height: 12px;
+  width: 24px;
+  height: 24px;
   border: 2px solid #1a2235;
   border-top: 2px solid #4a5a72;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   flex-shrink: 0;
+  margin-top: 50px;
 }
 
 @keyframes spin {
@@ -647,10 +647,20 @@ body {
   color: #7e7b7b;
   margin: 0;
   letter-spacing: 0.02em;
-  max-height: 800px;
-  max-width: 150px;
   overflow-y: scroll;
   width: 100%;
+}
+
+.generate-button {
+  background-color: rgba(255, 70, 42, 0.561);
+  color: white;
+  letter-spacing: 1px;
+  border: none;
+  padding: 10px 50px;
+  width: 100%;
+  border-radius: 20px;
+  margin-bottom: 1rem;
+  cursor: pointer;
 }
 
 @keyframes blink {
@@ -661,4 +671,174 @@ body {
   50% {
     opacity: 1;
   }
+}
+
+.kb {
+  height: 94.5%;
+  color: #13151de9;
+}
+
+.sources-container {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.sources-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  margin-bottom: 8px;
+}
+
+.sources-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.source-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+  font-family: inherit;
+  width: 100%;
+  text-align: left;
+}
+
+.source-chip:hover {
+  border-color: #7a9d52;
+  box-shadow: 0 0 0 3px rgba(122, 157, 82, 0.08);
+}
+
+.source-index {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  background: #f0f4eb;
+  color: #4a6b28;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.source-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.source-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.source-url {
+  font-size: 11px;
+  color: #94a3b8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+
+.source-icon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  color: #cbd5e1;
+}
+
+.typing-indicator-bubble {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 14px 18px;
+  width: fit-content;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #94a3b8;
+  animation: bounce 1.2s infinite ease-in-out;
+}
+
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+  40% { transform: translateY(-6px); opacity: 1; }
+}
+
+.atlas-input:disabled {
+  background: #f8fafc;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.atlas-send-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.sources-container {
+  animation: fadeSlideIn 0.4s ease forwards;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sources-toggle {
+  margin-top: 4px;
+  background: none;
+  border: none;
+  padding: 4px 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: #7a9d52;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+
+.sources-toggle:hover {
+  opacity: 0.75;
+}
+
+.toggle-arrow {
+  font-size: 11px;
 }

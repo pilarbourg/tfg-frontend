@@ -16,13 +16,13 @@ export function BrainViewer({ activeRegions = [], regionColours = {}, onRegionCl
   const [hoveredRegion, setHoveredRegion] = useState(null)
 
   return (
-    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+    <div style={{ width: '100%', height: '100%', position: 'relative'}}>
 
       {hoveredRegion && (
         <div style={{
           position: 'absolute',
           bottom: 15,
-          left: 20,
+          left: 15,
           background: '#334155',
           color: 'white',
           padding: '6px 12px',
@@ -60,8 +60,7 @@ export function BrainViewer({ activeRegions = [], regionColours = {}, onRegionCl
           enableRotate={true}
           minDistance={50}
           maxDistance={500}
-          autoRotate={activeRegions.length === 0}
-          autoRotateSpeed={2}
+
         />
       </Canvas>
     </div>

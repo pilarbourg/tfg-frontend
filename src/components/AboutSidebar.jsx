@@ -1,4 +1,4 @@
-const ChatSidebar = () => {
+const AboutSidebar = () => {
   return (
     <aside className="sidebar">
       <div className="sidebar-content">
@@ -6,49 +6,36 @@ const ChatSidebar = () => {
           <span className="title-top-sidebar">Parkinson's</span>
           <span className="title-bottom-sidebar">METABOLIC ATLAS</span>
         </div>
-
         <section>
           <p className="intro-text">
-            Ask questions about <em>metabolites</em>, brain regions, and
-            Parkinson's disease, grounded in peer-reviewed research.
+            A technical and scientific guide to the Atlas: clinical
+            context, tools, and <em>underlying architecture</em>.
           </p>
         </section>
-
         <nav className="service-list">
-          <h3>How to Use</h3>
-
+          <h3>On this page</h3>
           <div className="service-item">
-            <strong>1. Ask a Question</strong>
+            <strong>Parkinson's Disease</strong>
             <p>
-              Type any question about Parkinson's metabolomics, biomarkers, or
-              brain regions into the chat input.
+              Clinical background, metabolomic significance, and the research
+              gap this project addresses.
             </p>
           </div>
-
           <div className="service-item">
-            <strong>2. Get Research-Backed Answers</strong>
+            <strong>How to use the Atlas</strong>
             <p>
-              Responses are generated using Retrieval-Augmented Generation (RAG), the AI retrieves the most relevant passages before answering.
+              Step-by-step guides for the Brain Explorer, Codex AI, and
+              Knowledge Base.
             </p>
           </div>
-
           <div className="service-item">
-            <strong>3. Review Sources</strong>
+            <strong>System architecture</strong>
             <p>
-              Each answer cites the PubMed papers it drew from so you can
-              verify and explore further.
-            </p>
-          </div>
-
-          <div className="service-item">
-            <strong>4. Scope & Limitations</strong>
-            <p>
-              This AI is trained exclusively on <em>PubMed research papers</em>.
-              It will not answer questions outside this domain.
+              Technical overview of the RAG pipeline, embedding model,
+              re-ranker, and 3D visualiser.
             </p>
           </div>
         </nav>
-
         <div className="footer-info">
           <p className="project-title">Parkinson's Metabolic Atlas</p>
           <p className="author-name">
@@ -69,13 +56,20 @@ const ChatSidebar = () => {
             </a>
           </div>
         </div>
-
         <div className="data-sources">
           <p className="section-header">Data Sources</p>
           <p className="citation">
-            <em>Literature:</em> PubMed / PubMed Central. Indexed via NCBI
-            Entrez API. Embeddings generated with{" "}
-            <em>S-PubMedBert-MS-MARCO</em>.
+            <em>3D Model:</em> NIH 3D Print Exchange (2023). Brain Model
+            (Version 1.01).
+            <a
+              href="https://3d.nih.gov/entries/3DPX-021161"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {" "}
+              3DPX-021161
+            </a>
+            .
           </p>
         </div>
       </div>
@@ -83,4 +77,4 @@ const ChatSidebar = () => {
   );
 };
 
-export default ChatSidebar;
+export default AboutSidebar;

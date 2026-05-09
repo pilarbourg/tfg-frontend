@@ -47,17 +47,6 @@ const Header = () => {
             <span>Chat AI</span>
           </button>
         </Link>
-
-        <Link to="/KnowledgeBase">
-          <button
-            className={`neumorphic-btn ${
-              location.pathname === "/KnowledgeBase" ? "active" : ""
-            }`}
-          >
-            <img src="src/assets/knowledge-graph-svgrepo-com.svg" alt="icon" width="22" />
-            <span>Knowledge Base</span>
-          </button>
-        </Link>
       </div>
     </header>
   );
