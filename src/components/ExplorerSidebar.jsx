@@ -39,14 +39,6 @@ const ExplorerSidebar = () => {
               Drag to rotate · Scroll to zoom · Hover a region to see its name.
             </p>
           </div>
-
-          <div className="service-item">
-            <strong>4. Clear Selection</strong>
-            <p>
-              Remove individual metabolites using the × on each tag, or use
-              "Clear all" to reset.
-            </p>
-          </div>
         </nav>
 
         <div className="footer-info">

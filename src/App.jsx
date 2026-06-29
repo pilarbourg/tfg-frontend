@@ -11,28 +11,64 @@ import BrainExplorer from "./pages/BrainExplorer";
 import KnowledgeBase from "./pages/KnowledgeBase";
 import AtlasManager from "./pages/AtlasManager";
 import AdminLogin from "./components/AdminLogin";
-import { AnimatePresence } from "framer-motion";
+import LiteratureReview from "./pages/LiteratureReview";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect } from "react";
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
+
+const pageVariants = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
+};
+
+const pageTransition = {
+  duration: 0.15,
+  ease: "easeInOut",
+};
 
 function AnimatedRoutes() {
   const location = useLocation();
-
   return (
     <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Home />} />
-        <Route path="/About" element={<About />} />
-        <Route path="/ChatAI" element={<ChatAI />} />
-        <Route path="/BrainExplorer" element={<BrainExplorer />} />
-        <Route path="/KnowledgeBase" element={<KnowledgeBase />} />
-        <Route
-          path="/AtlasManager"
-          element={
-            <AdminLogin>
-              <AtlasManager />
-            </AdminLogin>
-          }
-        />
-      </Routes>
+      <motion.div
+        key={location.pathname}
+        variants={pageVariants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        transition={pageTransition}
+        style={{
+          position: "absolute",
+          width: "100%",
+          minHeight: "100vh",
+          backgroundColor: "#13151d",
+        }}
+      >
+        <Routes location={location}>
+          <Route path="/" element={<Home />} />
+          <Route path="/About" element={<About />} />
+          <Route path="/ChatAI" element={<ChatAI />} />
+          <Route path="/BrainExplorer" element={<BrainExplorer />} />
+          <Route path="/KnowledgeBase" element={<KnowledgeBase />} />
+          <Route path="/LiteratureReview" element={<LiteratureReview />} />
+          <Route
+            path="/AtlasManager"
+            element={
+              <AdminLogin>
+                <AtlasManager />
+              </AdminLogin>
+            }
+          />
+        </Routes>
+      </motion.div>
     </AnimatePresence>
   );
 }
@@ -40,6 +76,7 @@ function AnimatedRoutes() {
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <AnimatedRoutes />
     </Router>
   );

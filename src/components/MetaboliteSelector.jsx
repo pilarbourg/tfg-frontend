@@ -1,12 +1,11 @@
 import { useState } from "react";
 
 const METABOLITES = {
-  Neurotransmitters: [
+  "Neurotransmitters": [
     "Dopamine",
     "GABA",
     "Glutamate",
     "Serotonin",
-    "Acetylcholine",
     "Norepinephrine",
   ],
   "Amino Acids": [
@@ -25,14 +24,13 @@ const METABOLITES = {
     "Glucose",
     "NAD+",
   ],
-  "Oxidative Stress": ["Glutathione", "Uric Acid", "8-OHdG", "Malondialdehyde"],
-  Lipids: ["Ceramide", "Sphingomyelin", "Phosphatidylcholine", "Cholesterol"],
+  "Oxidative Stress": ["Glutathione", "Uric Acid", "8-OHdG"],
+  "Lipids": ["Ceramide", "Sphingomyelin", "Phosphatidylcholine", "Cholesterol"],
   "PD-Specific": [
     "Alpha-synuclein",
     "DOPAC",
     "Homovanillic Acid",
-    "3-Methoxytyramine",
-    "Levodopa",
+    "3-Methoxytyramine"
   ],
 };
 

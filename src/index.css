@@ -12,6 +12,20 @@ body,
   min-height: 100vh;
 }
 
+html {
+  background-color: #13151d;
+  overscroll-behavior: none;
+}
+
+body {
+  background-color: #13151d;
+  overscroll-behavior: none;
+}
+
+#root {
+  background-color: #13151d;
+}
+
 .canvas-container {
   width: 100vw;
   height: 100vh;
@@ -595,7 +609,7 @@ body {
 
 .metabolite-description {
   margin-top: 6rem;
-  min-height: 52px;
+  min-height: 60px;
   font-family: "DM Mono", monospace;
   font-size: 12px;
   line-height: 1.7;
@@ -652,7 +666,7 @@ body {
 }
 
 .generate-button {
-  background-color: rgba(255, 70, 42, 0.561);
+  background-color: #526963;
   color: white;
   letter-spacing: 1px;
   border: none;

@@ -47,7 +47,7 @@ const Sidebar = () => {
           </p>
           <div className="links">
             <a
-              href="https://github.com/your-username"
+              href="https://github.com/pilarbourg/tfg-etl-pipeline"
               target="_blank"
               rel="noreferrer"
             >

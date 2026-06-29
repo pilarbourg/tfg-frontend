@@ -9,6 +9,7 @@ import brain4 from "../assets/brain_4.png";
 import brain5 from "../assets/brain_5.png";
 import brain6 from "../assets/brain_6.png";
 import brain7 from "../assets/brain_7.png";
+import Footer from "../components/Footer"
 
 const GAIT_FRAMES = [brain1, brain2, brain3, brain4, brain5, brain6, brain7];
 

@@ -40,13 +40,6 @@ const ChatSidebar = () => {
             </p>
           </div>
 
-          <div className="service-item">
-            <strong>4. Scope & Limitations</strong>
-            <p>
-              This AI is trained exclusively on <em>PubMed research papers</em>.
-              It will not answer questions outside this domain.
-            </p>
-          </div>
         </nav>
 
         <div className="footer-info">

@@ -7,36 +7,10 @@ import {
 } from "@react-three/drei";
 import { Brain } from "../components/Brain";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
-
-const NAV_CARDS = [
-  {
-    to: "/explorer",
-    label: "Brain Explorer",
-    shortLabel: "Explorer",
-    description: "Interact with the 3D metabolic atlas",
-    accent: "#7a9d52",
-    icon: "◉",
-  },
-  {
-    to: "/chat",
-    label: "Codex AI",
-    shortLabel: "Codex",
-    description: "Research-backed conversational insights",
-    accent: "#64a0ff",
-    icon: "◈",
-  },
-  {
-    to: "/knowledge",
-    label: "Knowledge Base",
-    shortLabel: "Knowledge",
-    description: "Browse indexed clinical literature",
-    accent: "#ffaa00",
-    icon: "◫",
-  },
-];
+import Footer from "../components/Footer";
 
 function LoadingBrain() {
   const [dots, setDots] = useState(0);
@@ -46,106 +20,25 @@ function LoadingBrain() {
   }, []);
   return (
     <div style={styles.loadingOverlay}>
-      <div style={styles.loadingText}>initialising atlas{".".repeat(dots)}</div>
+      <div style={styles.loadingText}>Loading atlas{".".repeat(dots)}</div>
     </div>
   );
-}
-
-function IntroOverlay({ visible }) {
-  return (
-    <div
-      style={{
-        ...styles.introOverlay,
-        opacity: visible ? 1 : 0,
-        pointerEvents: visible ? "none" : "none",
-        transition: "opacity 1.2s ease",
-      }}
-    >
-      <div style={styles.introEyebrow}>Parkinson's Metabolic Atlas</div>
-      <div style={styles.introTitle}>
-        Explore the metabolic
-        <br />
-        landscape of the brain
-      </div>
-      <div style={styles.introSub}>
-        A research-grade tool for navigating PD metabolomics
-      </div>
-    </div>
-  );
-}
-
-function NavCards() {
-  const [hovered, setHovered] = useState(null);
-  return (
-    <div style={styles.navCardsContainer}>
-      {NAV_CARDS.map((card) => (
-        <Link
-          key={card.to}
-          to={card.to}
-          style={{
-            ...styles.navCard,
-            borderColor: hovered === card.to ? card.accent + "60" : "#22252f",
-            background:
-              hovered === card.to
-                ? `rgba(${hexToRgb(card.accent)}, 0.8)`
-                : "#13151de9",
-          }}
-          onMouseEnter={() => setHovered(card.to)}
-          onMouseLeave={() => setHovered(null)}
-        >
-          <div style={{ ...styles.navCardIcon, color: card.accent }}>
-            {card.icon}
-          </div>
-          <div style={styles.navCardLabel}>{card.label}</div>
-          <div style={styles.navCardDesc}>{card.description}</div>
-          <div
-            style={{
-              ...styles.navCardArrow,
-              color: card.accent,
-              opacity: hovered === card.to ? 1 : 0,
-            }}
-          >
-            →
-          </div>
-        </Link>
-      ))}
-    </div>
-  );
-}
-
-function StatsBar() {
-  const STATS = [
-    { label: "Research papers", value: "24+" },
-    { label: "Vector chunks", value: "3,800+" },
-    { label: "Brain regions", value: "90" },
-    { label: "Metabolites mapped", value: "60+" },
-  ];
-  return (
-    <div style={styles.statsBar}>
-      {STATS.map((s, i) => (
-        <div key={s.label} style={styles.statItem}>
-          <div style={styles.statValue}>{s.value}</div>
-          <div style={styles.statLabel}>{s.label}</div>
-          {i < STATS.length - 1 && <div style={styles.statDivider} />}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function hexToRgb(hex) {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `${r}, ${g}, ${b}`;
 }
 
 function Home() {
   const [loaded, setLoaded] = useState(false);
   const [introVisible, setIntroVisible] = useState(true);
+  const canvasRef = useRef(null);
 
   useEffect(() => {
-    // Show intro overlay briefly then fade it out
+    const el = canvasRef.current;
+    if (!el) return;
+    const handler = (e) => window.scrollBy({ top: e.deltaY });
+    el.addEventListener("wheel", handler, { passive: true });
+    return () => el.removeEventListener("wheel", handler);
+  }, []);
+
+  useEffect(() => {
     const t1 = setTimeout(() => setIntroVisible(false), 3000);
     return () => clearTimeout(t1);
   }, []);
@@ -165,14 +58,13 @@ function Home() {
       <Header />
       <div className="atlas-container">
         <Sidebar />
-        <main className="viewer-pane" style={{ position: "relative" }}>
-          {/* Loading state */}
+        <main
+          className="viewer-pane"
+          style={{ position: "relative" }}
+          ref={canvasRef}
+        >
           {!loaded && <LoadingBrain />}
 
-          {/* Intro overlay */}
-          <IntroOverlay visible={introVisible} />
-
-          {/* 3D Canvas */}
           <Canvas
             shadows
             camera={{ position: [0, 0, 50], fov: 40 }}
@@ -203,12 +95,9 @@ function Home() {
               enableDamping={true}
               dampingFactor={0.05}
               rotateSpeed={0.5}
+              enableZoom={false}
             />
           </Canvas>
-
-          <NavCards />
-
-          <StatsBar />
 
           <div style={styles.dragHint}>
             <span style={styles.dragHintIcon}>↻</span>
@@ -216,6 +105,7 @@ function Home() {
           </div>
         </main>
       </div>
+      <Footer />
     </>
   );
 }
@@ -224,7 +114,7 @@ const styles = {
   loadingOverlay: {
     position: "absolute",
     inset: 0,
-    background: "#13151d",
+    background: "#f2aeb1",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

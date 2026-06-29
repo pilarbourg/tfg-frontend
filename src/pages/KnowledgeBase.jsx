@@ -11,6 +11,7 @@ import {
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { Link } from "react-router-dom";
+import Footer from "../components/Footer"
 
 const C = {
   surface: "#181a23",
@@ -303,10 +304,6 @@ export default function KnowledgeBase() {
   return (
     <div>
       <div className="fab-container">
-        <div className="fab-label">
-          <span className="fab-label-text">How to use</span>
-          <span className="fab-arrow">→</span>
-        </div>
         <Link to="/About" title="About this Project" className="fab-button">
           ?
         </Link>

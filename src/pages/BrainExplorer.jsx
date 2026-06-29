@@ -5,6 +5,7 @@ import BrainViewer from "../components/BrainViewer";
 import MetaboliteSelector from "../components/MetaboliteSelector";
 import { useState, useEffect, useRef } from "react";
 import { METABOLITE_REGIONS } from "../data/metaboliteRegions";
+import Footer from "../components/Footer"
 
 const TAG_COLOURS = [
   "#ff4444",
@@ -57,7 +58,7 @@ function BrainExplorer() {
       setDescription(null);
       setLoading(true);
 
-      const response = await fetch("http://localhost:8000/atlas-describe", {
+      const response = await fetch("http://localhost:8000/api/atlas-describe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: input }),
@@ -71,15 +72,23 @@ function BrainExplorer() {
         const { done, value } = await reader.read();
         if (done) break;
 
-        const lines = decoder.decode(value).split("\n").filter(Boolean);
-        for (const line of lines) {
-          const parsed = JSON.parse(line);
-          if (parsed.type === "text") {
-            fullText += parsed.data;
-            setDescription(fullText);
+        const lines = decoder
+          .decode(value, { stream: true })
+          .split("\n")
+          .filter(Boolean);
+
+          for (const line of lines) {
+            try {
+              const parsed = JSON.parse(line);
+              if (parsed.type === "text") {
+                fullText += parsed.data;
+                setDescription(fullText);
+              }
+              if (parsed.type === "error") throw new Error(parsed.data);
+            } catch {
+              continue;
+            }
           }
-          if (parsed.type === "error") throw new Error(parsed.data);
-        }
       }
     } catch (e) {
       console.error("Failed to generate explanation:", e);
@@ -93,14 +102,6 @@ function BrainExplorer() {
   return (
     <>
       <div className="fab-container">
-        <div className="fab-label">
-          <span className="fab-label-text" style={{ color: "#ffffff" }}>
-            How to use
-          </span>
-          <span className="fab-arrow" style={{ color: "#ffffff" }}>
-            →
-          </span>
-        </div>
         <Link to="/About" title="About this Project" className="fab-button">
           ?
         </Link>
@@ -146,6 +147,8 @@ function BrainExplorer() {
           <MetaboliteSelector onSelectionChange={handleMetaboliteChange} />
         </aside>
       </div>
+      <Footer />
+
     </>
   );
 }

@@ -1,5 +1,4 @@
 import { Link, useLocation } from "react-router-dom";
-import logo from "../assets/brain-svgrepo-com.svg";
 
 const Header = () => {
   const location = useLocation();
@@ -7,7 +6,6 @@ const Header = () => {
   return (
     <header className="floating-header">
       <div className="header-left">
-        <img src={logo} alt="Atlas Logo" className="header-logo" />
         <div className="title-container">
           <span className="title-top">Parkinson's</span>
           <span className="title-bottom">METABOLIC ATLAS</span>
@@ -21,8 +19,7 @@ const Header = () => {
               location.pathname === "/" ? "active" : ""
             }`}
           >
-            <img src="src/assets/home-alt-svgrepo-com.svg" alt="icon" width="22" />
-            <span>Home</span>
+            <span>Overview</span>
           </button>
         </Link>
 
@@ -32,8 +29,7 @@ const Header = () => {
               location.pathname === "/BrainExplorer" ? "active" : ""
             }`}
           >
-            <img src="src/assets/search-svgrepo-com-2.svg" alt="icon" width="22" />
-            <span>Brain Explorer</span>
+            <span>Neural Atlas</span>
           </button>
         </Link>
 
@@ -43,8 +39,17 @@ const Header = () => {
               location.pathname === "/ChatAI" ? "active" : ""
             }`}
           >
-            <img src="src/assets/chat-conversation-svgrepo-com.svg" alt="icon" width="22" />
-            <span>Chat AI</span>
+            <span>Knowledge Base</span>
+          </button>
+        </Link>
+
+        <Link to="/LiteratureReview">
+          <button
+            className={`neumorphic-btn ${
+              location.pathname === "/LiteratureReview" ? "active" : ""
+            }`}
+          >
+            <span>Literature Review</span>
           </button>
         </Link>
       </div>
