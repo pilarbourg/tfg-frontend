@@ -207,12 +207,12 @@ function Admin() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/dashboard/stats")
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/dashboard/stats`)
       .then((r) => r.json())
       .then(setStats)
       .catch((e) => setError(e.message));
 
-    fetch("http://localhost:8000/api/dashboard/keywords")
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/dashboard/keywords`)
       .then((r) => r.json())
       .then((data) => setKeywords(data.keywords))
       .catch((e) => setError(e.message));

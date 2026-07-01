@@ -198,7 +198,7 @@ export default function LiteratureReview() {
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/search?query=parkinson&limit=10`);
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/search?query=parkinson&limit=10`);
         const data = await res.json();
         setCarouselPapers(data.results || []);
       } catch (e) {
@@ -214,7 +214,7 @@ export default function LiteratureReview() {
     setSearched(true);
 
     try {
-      const res = await fetch(`http://localhost:8000/api/search?query=${encodeURIComponent(query)}&limit=10`);
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/search?query=${encodeURIComponent(query)}&limit=10`);
       const data = await res.json();
       setResults(data.results || []);
       setCarouselPapers(data.results || []);

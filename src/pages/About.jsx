@@ -9,35 +9,8 @@ import brain4 from "../assets/brain_4.png";
 import brain5 from "../assets/brain_5.png";
 import brain6 from "../assets/brain_6.png";
 import brain7 from "../assets/brain_7.png";
-import Footer from "../components/Footer"
 
-const GAIT_FRAMES = [brain1, brain2, brain3, brain4, brain5, brain6, brain7];
-
-const BRAIN_IMAGES = [
-  {
-    src: "/images/brain/atlas_overview.jpg",
-    caption:
-      "Desikan-Killiany atlas — 34 cortical parcellations per hemisphere",
-    label: "01",
-  },
-  {
-    src: "/images/brain/substantia_nigra.jpg",
-    caption:
-      "Substantia nigra and basal ganglia — primary site of dopaminergic neuron loss",
-    label: "02",
-  },
-  {
-    src: "/images/brain/metabolite_overlay.jpg",
-    caption: "Dopamine pathway overlay — nigrostriatal projection highlighted",
-    label: "03",
-  },
-  {
-    src: "/images/brain/explorer_ui.jpg",
-    caption:
-      "Brain Explorer interface — metabolite selection and region illumination",
-    label: "04",
-  },
-];
+const BRAIN_FRAMES = [brain1, brain2, brain3, brain4, brain5, brain6, brain7];
 
 const FEATURES = [
   {
@@ -54,9 +27,9 @@ const FEATURES = [
   },
   {
     number: "02",
-    title: "Codex AI",
+    title: "Conversational Search",
     description:
-      "The Codex AI is a research-grade conversational assistant grounded exclusively in the indexed academic literature. Every factual claim is cited with the originating paper title and DOI. Use it to explore complex metabolic pathways, compare findings across studies, or investigate specific biomarkers.",
+      "The Conversational Search is an assistant grounded exclusively in the indexed academic literature. Every factual claim is cited with the originating paper title and DOI. Use it to explore complex metabolic pathways, compare findings across studies, or investigate specific biomarkers.",
     steps: [
       "Type a research question into the input field",
       "The system retrieves the most relevant source passages",
@@ -77,29 +50,6 @@ const FEATURES = [
   },
 ];
 
-const BIOMARKER_GROUPS = [
-  {
-    label: "Neurotransmitter metabolism",
-    colour: "#7a9d52",
-    items: ["Dopamine", "GABA", "Serotonin", "HVA", "DOPAC"],
-  },
-  {
-    label: "Amino acid metabolism",
-    colour: "#64a0ff",
-    items: ["Glutamate", "Glycine", "Tyrosine", "Tryptophan"],
-  },
-  {
-    label: "Energy metabolism",
-    colour: "#ffaa00",
-    items: ["Pyruvate", "Citric acid", "Acetoacetate"],
-  },
-  {
-    label: "Oxidative stress",
-    colour: "#ff4444",
-    items: ["Uric acid", "Xanthine", "Threonic acid"],
-  },
-];
-
 function BrainFlipbook() {
   const [frame, setFrame] = useState(0);
   const sectionRef = useRef(null);
@@ -114,8 +64,8 @@ function BrainFlipbook() {
       if (scrollableDistance <= 0) return;
       const progress = Math.min(Math.max(-rect.top / scrollableDistance, 0), 1);
       const frameIndex = Math.min(
-        Math.floor(progress * GAIT_FRAMES.length),
-        GAIT_FRAMES.length - 1
+        Math.floor(progress * BRAIN_FRAMES.length),
+        BRAIN_FRAMES.length - 1
       );
       setFrame(frameIndex);
     };
@@ -132,7 +82,7 @@ function BrainFlipbook() {
       <div style={styles.flipbookSticky}>
         <div style={styles.flipbookFrame}>
           <img
-            src={GAIT_FRAMES[frame]}
+            src={BRAIN_FRAMES[frame]}
             alt={`Brain visualisation frame ${frame + 1}`}
             style={styles.flipbookImg}
             onError={(e) => {
@@ -145,25 +95,20 @@ function BrainFlipbook() {
               {String(frame + 1).padStart(2, "0")}
             </div>
             <div style={styles.placeholderLabel}>brain · frame {frame + 1}</div>
-            <div style={styles.placeholderSub}>{GAIT_FRAMES[frame]}</div>
+            <div style={styles.placeholderSub}>{BRAIN_FRAMES[frame]}</div>
           </div>
           <div style={styles.frameCounter}>
             {String(frame + 1).padStart(2, "0")} /{" "}
-            {String(GAIT_FRAMES.length).padStart(2, "0")}
+            {String(BRAIN_FRAMES.length).padStart(2, "0")}
           </div>
           <div style={styles.progressBar}>
             <div
               style={{
                 ...styles.progressFill,
-                width: `${((frame + 1) / GAIT_FRAMES.length) * 100}%`,
+                width: `${((frame + 1) / BRAIN_FRAMES.length) * 100}%`,
               }}
             />
           </div>
-        </div>
-        <div style={styles.flipbookCaption}>
-          The human brain — from surface anatomy to subcortical structures,
-          as reconstructed from the FreeSurfer fsaverage template and
-          parcellated using the Desikan-Killiany atlas.
         </div>
       </div>
 
@@ -218,33 +163,6 @@ function BrainFlipbook() {
   );
 }
 
-function BrainImageGrid() {
-  return (
-    <div style={styles.brainGrid}>
-      {BRAIN_IMAGES.map((img) => (
-        <div key={img.label} style={styles.brainCard}>
-          <div style={styles.brainImgWrapper}>
-            <img
-              src={img.src}
-              alt={img.caption}
-              style={styles.brainImg}
-              onError={(e) => {
-                e.target.style.display = "none";
-                e.target.nextSibling.style.display = "flex";
-              }}
-            />
-            <div style={{ ...styles.brainPlaceholder, display: "none" }}>
-              <div style={styles.placeholderNumber}>{img.label}</div>
-              <div style={styles.placeholderSub}>{img.src}</div>
-            </div>
-          </div>
-          <div style={styles.brainCaption}>{img.caption}</div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 function About() {
   return (
     <>
@@ -293,51 +211,11 @@ function About() {
                   visualiser.
                 </p>
               </div>
-              <div style={styles.biomarkerGrid}>
-                {BIOMARKER_GROUPS.map((group) => (
-                  <div key={group.label} style={styles.biomarkerCard}>
-                    <div
-                      style={{
-                        ...styles.biomarkerDot,
-                        background: group.colour,
-                      }}
-                    />
-                    <div style={styles.biomarkerLabel}>{group.label}</div>
-                    <div style={styles.biomarkerItems}>
-                      {group.items.map((item) => (
-                        <span
-                          key={item}
-                          style={{
-                            ...styles.biomarkerPill,
-                            borderColor: group.colour + "40",
-                            color: group.colour,
-                          }}
-                        >
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
             </section>
 
             <div style={styles.divider} />
 
             <BrainFlipbook />
-
-            <div style={styles.divider} />
-
-            <section style={styles.howSection}>
-              <div style={styles.howEyebrow}>Neuroanatomy</div>
-              <h2 style={styles.howTitle}>The Atlas in detail</h2>
-              <p style={styles.howSubtitle}>
-                The 3D visualiser maps metabolite data onto a standardised brain
-                template, allowing precise neuroanatomical localisation of
-                biochemical findings from the indexed literature.
-              </p>
-              <BrainImageGrid />
-            </section>
 
             <div style={styles.divider} />
 
@@ -369,51 +247,6 @@ function About() {
                     </div>
                   </div>
                 ))}
-              </div>
-            </section>
-
-            <div style={styles.divider} />
-
-            <section style={styles.techSection}>
-              <div style={styles.howEyebrow}>Technical overview</div>
-              <h2 style={styles.howTitle}>System architecture</h2>
-              <div style={styles.techGrid}>
-                <div style={styles.techCard}>
-                  <div style={styles.techCardLabel}>Retrieval</div>
-                  <div style={styles.techCardValue}>pgvector</div>
-                  <div style={styles.techCardDesc}>
-                    Semantic search over 768-dimensional S-PubMedBert embeddings
-                    stored in a PostgreSQL vector database. Initial top-20
-                    retrieval by cosine similarity.
-                  </div>
-                </div>
-                <div style={styles.techCard}>
-                  <div style={styles.techCardLabel}>Re-ranking</div>
-                  <div style={styles.techCardValue}>FlashRank</div>
-                  <div style={styles.techCardDesc}>
-                    A cross-encoder re-ranker rescores the initial 20
-                    candidates, returning the top 10 highest-quality passages to
-                    the language model context window.
-                  </div>
-                </div>
-                <div style={styles.techCard}>
-                  <div style={styles.techCardLabel}>Generation</div>
-                  <div style={styles.techCardValue}>Llama 3</div>
-                  <div style={styles.techCardDesc}>
-                    Responses are generated at temperature 0.0 for
-                    deterministic, reproducible output. The model is constrained
-                    to cite only the provided research excerpts.
-                  </div>
-                </div>
-                <div style={styles.techCard}>
-                  <div style={styles.techCardLabel}>Visualisation</div>
-                  <div style={styles.techCardValue}>fsaverage</div>
-                  <div style={styles.techCardDesc}>
-                    The 3D brain model is built from the FreeSurfer fsaverage
-                    template using the Desikan-Killiany atlas for cortical
-                    parcellation and ASEG for subcortical segmentation.
-                  </div>
-                </div>
               </div>
             </section>
           </div>
@@ -507,7 +340,7 @@ const styles = {
     gridTemplateColumns: "1fr 1fr",
     gap: "2.5rem",
     alignItems: "start",
-    minHeight: `${GAIT_FRAMES.length * 200}px`,
+    minHeight: `${BRAIN_FRAMES.length * 200}px`,
   },
   flipbookSticky: {
     position: "sticky",

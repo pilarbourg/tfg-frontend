@@ -22,21 +22,15 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# --- Critical: Security ---
 .env
 .env.*
 !.env.example
-
-# --- Critical: Build & Caches ---
 .next/
 .svelte-kit/
 .cache/
 .turbo/
 .parcel-cache/
 coverage/
-
-# --- Mac Specific ---
 .AppleDouble
 .LSOverride
 ._*
