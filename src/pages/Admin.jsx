@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
-import AtlasManagerSidebar from "../components/AtlasManagerSidebar";
+import AdminSidebar from "../components/AdminSidebar";
 
 function buildDocs(docs) {
   return docs.map((doc, i) => ({
@@ -20,8 +19,8 @@ function buildDocs(docs) {
 }
 
 function KnowledgeGraph({ keywords }) {
-  const width = 420;
-  const height = 400;
+  const width = 360;
+  const height = 390;
   const cx = width / 2;
   const cy = height / 2;
 
@@ -34,13 +33,13 @@ function KnowledgeGraph({ keywords }) {
       ? 0.5
       : (freq - minFreq) / (maxFreq - minFreq);
 
-  const hub = { id: "hub", label: "Parkinson's\nMetabolomics", x: cx, y: cy, r: 28, freq: maxFreq };
+  const hub = { id: "hub", label: "Parkinson's\nMetabolomics", x: cx, y: cy, r: 36, freq: maxFreq };
 
   const inner = top.slice(0, 7);
   const outer = top.slice(7, 20);
 
-  const innerRadius = 100;
-  const outerRadius = 160;
+  const innerRadius = 105;
+  const outerRadius = 165;
 
   const innerNodes = inner.map((kw, i) => {
     const angle = (2 * Math.PI * i) / inner.length - Math.PI / 2;
@@ -49,7 +48,7 @@ function KnowledgeGraph({ keywords }) {
       label: kw.word,
       x: cx + innerRadius * Math.cos(angle),
       y: cy + innerRadius * Math.sin(angle),
-      r: 6 + normalize(kw.freq) * 10,
+      r: 10 + normalize(kw.freq) * 12,
       freq: kw.freq,
       ring: "inner",
     };
@@ -62,13 +61,11 @@ function KnowledgeGraph({ keywords }) {
       label: kw.word,
       x: cx + outerRadius * Math.cos(angle),
       y: cy + outerRadius * Math.sin(angle),
-      r: 4 + normalize(kw.freq) * 7,
+      r: 6 + normalize(kw.freq) * 7,
       freq: kw.freq,
       ring: "outer",
     };
   });
-
-  const allNodes = [...innerNodes, ...outerNodes];
 
   const edges = [];
   innerNodes.forEach((n) => edges.push({ x1: hub.x, y1: hub.y, x2: n.x, y2: n.y, strong: true }));
@@ -96,10 +93,10 @@ function KnowledgeGraph({ keywords }) {
       ))}
 
       <circle cx={hub.x} cy={hub.y} r={hub.r} fill="#1a2e24" stroke="#3a6b4a" strokeWidth={1.5} />
-      <text x={hub.x} y={hub.y - 5} textAnchor="middle" fontSize="6.5" fill="#7a9d52" fontWeight="600">
+      <text x={hub.x} y={hub.y - 4} textAnchor="middle" fontSize="9" fill="#8CC0EB" fontWeight="600">
         Parkinson's
       </text>
-      <text x={hub.x} y={hub.y + 6} textAnchor="middle" fontSize="6.5" fill="#7a9d52" fontWeight="600">
+      <text x={hub.x} y={hub.y + 8} textAnchor="middle" fontSize="8" fill="#8CC0EB" fontWeight="600">
         Metabolomics
       </text>
 
@@ -108,10 +105,10 @@ function KnowledgeGraph({ keywords }) {
           <circle cx={n.x} cy={n.y} r={n.r} fill="#1a2e24" stroke="#4b8a5a" strokeWidth={1} />
           <text
             x={n.x}
-            y={n.y > cy ? n.y + n.r + 9 : n.y - n.r - 3}
+            y={n.y > cy ? n.y + n.r + 10 : n.y - n.r - 4}
             textAnchor="middle"
-            fontSize="6"
-            fill="#7e9e8a"
+            fontSize="7"
+            fill="#8CC0EB"
           >
             {n.label}
           </text>
@@ -123,10 +120,10 @@ function KnowledgeGraph({ keywords }) {
           <circle cx={n.x} cy={n.y} r={n.r} fill="#151e1a" stroke="#2e4a3e" strokeWidth={0.8} />
           <text
             x={n.x}
-            y={n.y > cy ? n.y + n.r + 8 : n.y - n.r - 3}
+            y={n.y > cy ? n.y + n.r + 9 : n.y - n.r - 4}
             textAnchor="middle"
-            fontSize="5.5"
-            fill="#4b6a58"
+            fontSize="6"
+            fill="#8CC0EB"
           >
             {n.label}
           </text>
@@ -160,37 +157,6 @@ function buildStats(data) {
     },
   ];
 }
-
-const RAG_PARAMS = [
-  {
-    label: "Initial top-k retrieval",
-    value: "20",
-    desc: "Chunks retrieved per query",
-  },
-  {
-    label: "Top-k after re-ranking",
-    value: "10",
-    desc: "Final chunks passed to LLM",
-  },
-  {
-    label: "Chat AI context window",
-    value: "12,288",
-    desc: "Tokens",
-  },
-  {
-    label: "3-D Atlas context window",
-    value: "4,096",
-    desc: "Tokens",
-  },
-  { label: "Re-ranker", value: "FlashRank", desc: "Cross-encoder re-ranking" },
-  { label: "Temperature", value: "0.0", desc: "Deterministic output" },
-];
-
-const STATUS_ITEMS = [
-  { label: "FastAPI backend — online (port 8000)", ok: true },
-  { label: "PostgreSQL + pgvector — connected", ok: true },
-  { label: "Ollama (Llama3) — running locally", ok: true },
-];
 
 function StatCard({ label, value, sub, small }) {
   return (
@@ -231,47 +197,11 @@ function DocItem({ doc }) {
           {doc.chunks} chunks · {doc.date}
         </div>
       </div>
-      <div style={styles.docActions}>
-        <button style={styles.deleteBtn}>delete</button>
-      </div>
     </div>
   );
 }
 
-function LogItem({ log }) {
-  return (
-    <div style={styles.logItem}>
-      <div style={styles.logQuery}>"{log.query}"</div>
-      <div style={styles.logMeta}>
-        <span>{log.time}</span>
-        <span style={styles.logSrc}>{log.sources} sources retrieved</span>
-      </div>
-    </div>
-  );
-}
-
-function ParamItem({ label, value, desc }) {
-  return (
-    <div style={styles.paramItem}>
-      <div style={styles.paramLabel}>{label}</div>
-      <div style={styles.paramValue}>{value}</div>
-      <div style={styles.paramDesc}>{desc}</div>
-    </div>
-  );
-}
-
-function StatusItem({ label, ok }) {
-  return (
-    <div style={styles.statusRow}>
-      <div
-        style={{ ...styles.statusDot, ...(ok ? {} : styles.statusDotWarn) }}
-      />
-      <div style={styles.statusText}>{label}</div>
-    </div>
-  );
-}
-
-function AtlasManager() {
+function Admin() {
   const [stats, setStats] = useState(null);
   const [keywords, setKeywords] = useState(null);
   const [error, setError] = useState(null);
@@ -307,7 +237,7 @@ function AtlasManager() {
       <div className="grain-overlay" />
       <Header />
       <div className="atlas-container">
-        <AtlasManagerSidebar />
+        <AdminSidebar />
         <main style={styles.main}>
           <div style={styles.content}>
             <SectionLabel>System overview</SectionLabel>
@@ -342,29 +272,15 @@ function AtlasManager() {
 
             <div style={styles.grid2}>
               <div>
-                <SectionLabel>Knowledge base</SectionLabel>
+                <SectionLabel>Knowledge base - Recent downloads</SectionLabel>
                 <div style={styles.panel} className="kb">
-                  <div style={styles.uploadArea}>
-                    <div style={styles.uploadIcon}>↑</div>
-                    <div style={styles.uploadText}>
-                      <span style={styles.uploadHighlight}>
-                        Click to upload
-                      </span>{" "}
-                      or drag PDF here
-                    </div>
-                    <div style={styles.uploadText}>
-                      Processed via Docling ETL pipeline
-                    </div>
-                  </div>
-                  <button style={styles.indexBtn}>Index document</button>
-                  <div style={styles.divider} />
                   <div style={styles.docList}>
                     {stats?.recent_docs ? (
                       buildDocs(stats.recent_docs).map((doc) => (
                         <DocItem key={doc.id} doc={doc} />
                       ))
                     ) : (
-                      <div style={{ color: "#3d5a5e", fontSize: "0.75rem" }}>
+                      <div style={{ color: "#BFDDF0", fontSize: "0.75rem" }}>
                         Loading...
                       </div>
                     )}
@@ -373,14 +289,14 @@ function AtlasManager() {
               </div>
 
               <div>
-                <SectionLabel>Knowledge graph</SectionLabel>
+                <SectionLabel>Most common keywords</SectionLabel>
                 <div style={styles.panel}>
                   {keywords ? (
                     <KnowledgeGraph keywords={keywords} />
                   ) : (
                     <div
                       style={{
-                        color: "#3d5a5e",
+                        color: "#BFDDF0",
                         fontSize: "0.75rem",
                         padding: "1rem",
                       }}
@@ -389,32 +305,6 @@ function AtlasManager() {
                     </div>
                   )}
                 </div>
-
-                <SectionLabel style={{ marginTop: "1.5rem" }}>
-                  RAG configuration
-                </SectionLabel>
-                <div style={styles.panel}>
-                  <div style={styles.paramsGrid}>
-                    {RAG_PARAMS.map((p) => (
-                      <ParamItem key={p.label} {...p} />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <SectionLabel>System status</SectionLabel>
-            <div style={{ ...styles.panel, marginBottom: "2rem" }}>
-              <div style={styles.statusGrid}>
-                {[0, 1, 2].map((col) => (
-                  <div key={col}>
-                    {STATUS_ITEMS.filter((_, i) => i % 3 === col).map(
-                      (item) => (
-                        <StatusItem key={item.label} {...item} />
-                      )
-                    )}
-                  </div>
-                ))}
               </div>
             </div>
           </div>
@@ -446,10 +336,10 @@ const styles = {
     padding: "1rem 1.25rem",
   },
   statLabel: {
-    fontSize: "0.65rem",
+    fontSize: "0.75rem",
     textTransform: "uppercase",
     letterSpacing: "0.08em",
-    color: "#4b595d",
+    color: "#4D6C86",
     marginBottom: "0.4rem",
   },
   statValue: {
@@ -463,14 +353,14 @@ const styles = {
   },
   statSub: {
     fontSize: "0.7rem",
-    color: "#3d5a5e",
+    color: "#BFDDF0",
     marginTop: "0.25rem",
   },
   sectionLabel: {
-    fontSize: "0.65rem",
+    fontSize: "0.85rem",
     textTransform: "uppercase",
     letterSpacing: "0.1em",
-    color: "#4b595d",
+    color: "#4D6C86",
     fontWeight: 600,
     borderBottom: "1px solid #2a2d3a",
     paddingBottom: "0.5rem",
@@ -478,7 +368,7 @@ const styles = {
   },
   grid2: {
     display: "grid",
-    gridTemplateColumns: "1fr 1fr",
+    gridTemplateColumns: "1fr 2fr",
     gap: "1.5rem",
     marginBottom: "2rem",
   },
@@ -487,38 +377,6 @@ const styles = {
     border: "1px solid #2a2d3a",
     borderRadius: "10px",
     padding: "1.25rem",
-  },
-  uploadArea: {
-    border: "1px dashed #2e3545",
-    borderRadius: "8px",
-    padding: "2rem",
-    textAlign: "center",
-    marginBottom: "1rem",
-    cursor: "pointer",
-  },
-  uploadIcon: {
-    fontSize: "1.5rem",
-    marginBottom: "0.5rem",
-    color: "#4b595d",
-  },
-  uploadText: {
-    fontSize: "0.8rem",
-    color: "#4b595d",
-    marginTop: "4px",
-  },
-  uploadHighlight: {
-    color: "#7a9d52",
-  },
-  indexBtn: {
-    background: "rgba(122, 157, 82, 0.15)",
-    color: "#7a9d52",
-    border: "1px solid rgba(122, 157, 82, 0.3)",
-    padding: "8px 16px",
-    borderRadius: "6px",
-    fontSize: "0.8rem",
-    cursor: "pointer",
-    letterSpacing: "0.05em",
-    width: "100%",
   },
   divider: {
     height: "1px",
@@ -530,7 +388,7 @@ const styles = {
     flexDirection: "column",
     gap: "8px",
     overflowY: "auto",
-    maxHeight: "690px",
+    maxHeight: "850px",
   },
   docItem: {
     display: "flex",
@@ -548,84 +406,20 @@ const styles = {
   },
   docTitle: {
     fontSize: "0.78rem",
-    color: "#b0bec5",
+    color: "#8CC0EB",
     marginBottom: "2px",
   },
   docTitleLink: {
-    fontSize: "0.78rem",
-    color: "#b0bec5",
+    fontSize: "0.9rem",
+    color: "#8CC0EB",
     marginBottom: "2px",
-    textDecoration: "underline",
+    textDecoration: "none",
     lineHeight: "1.4",
     display: "block",
   },
   docMeta: {
-    fontSize: "0.65rem",
-    color: "#3d5a5e",
-  },
-  docActions: {
-    display: "flex",
-    gap: "6px",
-    flexShrink: 0,
-    marginLeft: "8px",
-    alignItems: "center",
-  },
-  badge: {
-    display: "inline-block",
-    fontSize: "0.6rem",
-    textTransform: "uppercase",
-    letterSpacing: "0.06em",
-    padding: "2px 7px",
-    borderRadius: "20px",
-  },
-  badgeOk: {
-    background: "rgba(122,157,82,0.15)",
-    color: "#7a9d52",
-  },
-  badgeWarn: {
-    background: "rgba(255,170,0,0.12)",
-    color: "#c8940a",
-  },
-  deleteBtn: {
-    background: "rgba(255,70,42,0.08)",
-    color: "#7a3a2a",
-    border: "none",
-    cursor: "pointer",
-    fontSize: "0.7rem",
-    padding: "4px 8px",
-    borderRadius: "4px",
-    letterSpacing: "0.04em",
-  },
-  logList: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "6px",
-    maxHeight: "260px",
-    overflowY: "auto",
-  },
-  logItem: {
-    background: "#13151d",
-    border: "1px solid #22252f",
-    borderRadius: "6px",
-    padding: "10px 12px",
-  },
-  logQuery: {
-    fontSize: "0.78rem",
-    color: "#8fa8b0",
-    fontFamily: "'DM Mono', monospace",
-    marginBottom: "4px",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  },
-  logMeta: {
-    fontSize: "0.65rem",
-    color: "#3d5a5e",
-    display: "flex",
-    gap: "1rem",
-  },
-  logSrc: {
-    color: "#4b6a70",
+    fontSize: "0.85rem",
+    color: "#4D6C86",
   },
   paramsGrid: {
     display: "grid",
@@ -639,10 +433,10 @@ const styles = {
     padding: "10px 12px",
   },
   paramLabel: {
-    fontSize: "0.65rem",
+    fontSize: "0.85rem",
     textTransform: "uppercase",
     letterSpacing: "0.07em",
-    color: "#4b595d",
+    color: "#4D6C86",
     marginBottom: "4px",
   },
   paramValue: {
@@ -651,37 +445,10 @@ const styles = {
     color: "#7a9d52",
   },
   paramDesc: {
-    fontSize: "0.65rem",
-    color: "#3d5a5e",
+    fontSize: "0.85rem",
+    color: "#BFDDF0",
     marginTop: "2px",
-  },
-  statusGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(3, 1fr)",
-    gap: "1rem",
-  },
-  statusRow: {
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
-    marginBottom: "10px",
-  },
-  statusDot: {
-    width: "8px",
-    height: "8px",
-    borderRadius: "50%",
-    background: "#79c522",
-    boxShadow: "0 0 6px #79c522",
-    flexShrink: 0,
-  },
-  statusDotWarn: {
-    background: "#c8940a",
-    boxShadow: "0 0 6px #c8940a",
-  },
-  statusText: {
-    fontSize: "0.78rem",
-    color: "#7e7b7b",
-  },
+  }
 };
 
-export default AtlasManager;
+export default Admin;

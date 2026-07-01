@@ -1,4 +1,4 @@
-const AtlasManagerSidebar = () => {
+const AdminSidebar = () => {
   return (
     <aside className="sidebar">
       <div className="sidebar-content">
@@ -8,15 +8,15 @@ const AtlasManagerSidebar = () => {
         </div>
         <section>
           <p className="intro-text">
-            <em>Atlas Manager</em> — restricted access portal for knowledge
-            base administration and system monitoring.
+            Restricted access portal for knowledge
+            base administration.
           </p>
         </section>
         <nav className="service-list">
           <h3>Manager Tools</h3>
           <div className="service-item">
             <strong>Knowledge Base</strong>
-            <p>View, upload, and remove indexed research documents.</p>
+            <p>View indexed research documents.</p>
           </div>
           <div className="service-item">
             <strong>System Statistics</strong>
@@ -26,8 +26,8 @@ const AtlasManagerSidebar = () => {
             </p>
           </div>
           <div className="service-item">
-            <strong>Query Logs</strong>
-            <p>Review recent queries and their retrieved source documents.</p>
+            <strong>Keywords</strong>
+            <p>Review most common keywords.</p>
           </div>
         </nav>
         <div className="footer-info">
@@ -46,4 +46,4 @@ const AtlasManagerSidebar = () => {
   );
 };
 
-export default AtlasManagerSidebar;
+export default AdminSidebar;

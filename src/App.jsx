@@ -9,7 +9,7 @@ import About from "./pages/About";
 import ChatAI from "./pages/ChatAI";
 import BrainExplorer from "./pages/BrainExplorer";
 import KnowledgeBase from "./pages/KnowledgeBase";
-import AtlasManager from "./pages/AtlasManager";
+import Admin from "./pages/Admin";
 import AdminLogin from "./components/AdminLogin";
 import LiteratureReview from "./pages/LiteratureReview";
 import { AnimatePresence, motion } from "framer-motion";
@@ -60,10 +60,10 @@ function AnimatedRoutes() {
           <Route path="/KnowledgeBase" element={<KnowledgeBase />} />
           <Route path="/LiteratureReview" element={<LiteratureReview />} />
           <Route
-            path="/AtlasManager"
+            path="/Admin"
             element={
               <AdminLogin>
-                <AtlasManager />
+                <Admin />
               </AdminLogin>
             }
           />
