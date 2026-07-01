@@ -12,7 +12,7 @@ import KnowledgeBase from "./pages/KnowledgeBase";
 import Admin from "./pages/Admin";
 import AdminLogin from "./components/AdminLogin";
 import LiteratureReview from "./pages/LiteratureReview";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
 
 function ScrollToTop() {
