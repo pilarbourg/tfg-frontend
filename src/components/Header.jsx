@@ -29,7 +29,7 @@ const Header = () => {
               location.pathname === "/BrainExplorer" ? "active" : ""
             }`}
           >
-            <span>Neural Atlas</span>
+            <span>Neurometabolic Atlas</span>
           </button>
         </Link>
 
@@ -39,7 +39,7 @@ const Header = () => {
               location.pathname === "/ChatAI" ? "active" : ""
             }`}
           >
-            <span>Knowledge Base</span>
+            <span>Conversational Search</span>
           </button>
         </Link>
 

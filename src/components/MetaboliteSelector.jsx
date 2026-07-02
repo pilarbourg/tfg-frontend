@@ -1,37 +1,30 @@
 import { useState } from "react";
 
 const METABOLITES = {
-  "Neurotransmitters": [
-    "Dopamine",
-    "GABA",
-    "Glutamate",
-    "Serotonin",
-    "Norepinephrine",
-  ],
   "Amino Acids": [
-    "Tyrosine",
-    "Phenylalanine",
-    "Tryptophan",
-    "Glutamine",
-    "Glycine",
-    "Alanine",
+    "alanine",
+    "g-aminobutyric acid (GABA)",
+    "glycine",
+    "glutamate",
+    "histidine",
+    "tryptophan",
+    "tyrosine"
   ],
-  "Energy Metabolism": [
-    "Lactate",
-    "Pyruvate",
-    "ATP",
-    "Creatine",
-    "Glucose",
-    "NAD+",
+  "Neurotransmitter metabolism": [
+    "3-hydroxyanthranilic acid",
+    "3-hydroxykynurenine",
+    "kynurenic acid",
+    "kynurenine",
+    "quinolinic acid",
+    "3-methoxytyramine",
+    "3,4-dihydroxyphenylacetic acid (DOPAC)",
+    "homovanillic acid (HVA)",
+    "dopamine",
+    "serotonin"
   ],
-  "Oxidative Stress": ["Glutathione", "Uric Acid", "8-OHdG"],
-  "Lipids": ["Ceramide", "Sphingomyelin", "Phosphatidylcholine", "Cholesterol"],
-  "PD-Specific": [
-    "Alpha-synuclein",
-    "DOPAC",
-    "Homovanillic Acid",
-    "3-Methoxytyramine"
-  ],
+  "Oxidative Stress": [
+    "threonic acid"
+  ]
 };
 
 const TAG_COLOURS = [

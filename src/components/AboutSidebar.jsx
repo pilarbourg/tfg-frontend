@@ -24,7 +24,7 @@ const AboutSidebar = () => {
           <div className="service-item">
             <strong>How to use the Atlas</strong>
             <p>
-              Step-by-step guides for the Brain Explorer, Codex AI, and
+              Step-by-step guides for the Brain Explorer, Conversational Search, and
               Knowledge Base.
             </p>
           </div>
